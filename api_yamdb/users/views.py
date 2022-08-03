@@ -1,5 +1,6 @@
 from smtplib import SMTPResponseException
 
+from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
@@ -13,7 +14,6 @@ from .models import User
 from .permissions import IsAdmin
 from .serializers import (RegistrationSerializer, TokenSerializer,
                           UserSerializer)
-from django.conf import settings
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -45,7 +45,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 @api_view(['POST'])
-def registration_API_view(request):
+def registration_api_view(request):
     serializer = RegistrationSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     username = serializer.validated_data.get('username')
