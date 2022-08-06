@@ -6,7 +6,6 @@ jobs:
   tests:
     # «Раннер» — создание изолированного окружения с последней версией Ubuntu
     runs-on: ubuntu-latest
-
     steps:
     # Запуск actions checkout — готового скрипта
     # для клонирования репозитория
@@ -59,10 +58,10 @@ jobs:
             file: ./api_yamdb/Dockerfile
             push: true
             tags: ${{ secrets.DOCKER_USERNAME }}/yamdb_final:latest
-
   deploy:
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
+    if: github.ref == 'refs/heads/develop'
     steps:
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
@@ -74,6 +73,7 @@ jobs:
           script: |
             sudo docker compose stop
             sudo docker compose rm web
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/yamdb_final:latest
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
@@ -81,7 +81,7 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            sudo docker compose up -d 
+            sudo docker compose up -d
 
   send_message:
     runs-on: ubuntu-latest
