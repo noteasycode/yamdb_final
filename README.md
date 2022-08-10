@@ -1,10 +1,5 @@
 ![example workflow](https://github.com/noteasycode/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg)
 
-Проект можно найти на:
-
-http://159.65.114.121/redoc/
-http://159.65.114.121/admin/
-http://159.65.114.121/api/v1/
 
 # yamdb_final
 
